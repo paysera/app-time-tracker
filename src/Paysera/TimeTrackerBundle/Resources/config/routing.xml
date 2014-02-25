@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="paysera_time_tracker_reserve" path="/transactions" methods="POST">
+        <default key="_controller">paysera_time_tracker.api_controller:reserve</default>
+    </route>
+
+    <route id="paysera_time_tracker_cancel" path="/transactions/{number}" methods="DELETE">
+        <default key="_controller">paysera_time_tracker.api_controller:cancel</default>
+    </route>
+
+    <route id="paysera_time_tracker_confirm" path="/transactions/{number}" methods="PUT">
+        <default key="_controller">paysera_time_tracker.api_controller:confirm</default>
+    </route>
+
+    <route id="paysera_time_tracker_get_transaction" path="/transactions/{number}" methods="GET">
+        <default key="_controller">paysera_time_tracker.api_controller:getEntry</default>
+    </route>
+
+    <route id="paysera_time_tracker_get_transactions" path="/transactions" methods="GET">
+        <default key="_controller">paysera_time_tracker.api_controller:getEntries</default>
+    </route>
+
+
+</routes>

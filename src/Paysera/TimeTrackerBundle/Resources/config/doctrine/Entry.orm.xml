@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Paysera\TimeTrackerBundle\Entity\Entry" table="entry"
+            repository-class="Paysera\TimeTrackerBundle\Repository\EntryRepository">
+        
+        <indexes>
+            <index columns="status"/>
+            <index columns="number,status"/>
+            <index columns="next_reservation_at"/>
+        </indexes>
+        
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="number" type="string" length="255" />
+        <field name="transactionKey" column="transaction_key" type="string" length="255" nullable="true" />
+        <field name="priceAmount" column="price_amount" type="decimal" precision="16" scale="6" nullable="true" />
+        <field name="priceCurrency" column="price_currency" type="string" length="255" />
+        <field name="createdAt" column="created" type="datetime" />
+        <field name="updatedAt" column="updated" type="datetime" />
+        <field name="nextReservationAt" column="next_reservation_at" type="datetime" />
+        <field name="status" type="string" length="255" />
+
+        <many-to-one target-entity="Paysera\TimeTrackerBundle\Entity\Location" field="location" />
+
+    </entity>
+</doctrine-mapping>

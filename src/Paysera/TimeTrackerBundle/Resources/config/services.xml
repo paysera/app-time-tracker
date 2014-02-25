@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="time_tracker.payment_description">For parking in %location_name%</parameter>
+        <parameter key="time_tracker.wallet_api_url">https://wallet.paysera.com</parameter>
+    </parameters>
+
+    <services>
+        <service id="evp.paysera_wallet_api" class="Paysera_WalletApi">
+            <argument>%time_tracker.wallet_client_mac%</argument>
+            <argument>%time_tracker.wallet_client_secret%</argument>
+            <argument type="service">
+                <service class="Paysera_WalletApi_Util_Router">
+                    <argument>%time_tracker.wallet_api_url%</argument>
+                </service>
+            </argument>
+        </service>
+        <service id="evp.paysera_wallet_client" class="Paysera_WalletApi_Client_WalletClient"
+                 factory-service="evp.paysera_wallet_api"
+                 factory-method="walletClient">
+        </service>
+
+        <service id="paysera_time_tracker.api_controller" class="Paysera\TimeTrackerBundle\Controller\ApiController">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="evp.paysera_wallet_client"/>
+            <argument type="service" id="paysera_time_tracker.repository.location"/>
+            <argument type="service" id="paysera_time_tracker.repository.entry"/>
+            <argument type="service" id="paysera_time_tracker.tracker"/>
+
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+        </service>
+
+        <service id="paysera_time_tracker.pricing_manager" class="Paysera\TimeTrackerBundle\Service\PricingManager">
+            <argument type="service" id="paysera_time_tracker.repository.price"/>
+        </service>
+
+        <service id="paysera_time_tracker.tracker" class="Paysera\TimeTrackerBundle\Service\Tracker">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service">
+                <service class="DateInterval">
+                    <argument>PT7200S</argument>
+                </service>
+            </argument>
+            <argument type="service" id="paysera_time_tracker.pricing_manager"/>
+            <argument type="service" id="evp.paysera_wallet_client"/>
+            <argument>%time_tracker.payment_description%</argument>
+            <argument type="service" id="paysera_time_tracker.repository.entry"/>
+            <argument type="service" id="logger"/>
+        </service>
+
+        <service id="paysera_time_tracker.repository.price" class="Doctrine\Orm\EntityRepository"
+                 factory-service="doctrine.orm.entity_manager" factory-method="getRepository" lazy="true">
+            <argument>PayseraTimeTrackerBundle:Price</argument>
+        </service>
+
+        <service id="paysera_time_tracker.repository.location" class="Doctrine\Orm\EntityRepository"
+                 factory-service="doctrine.orm.entity_manager" factory-method="getRepository" lazy="true">
+            <argument>PayseraTimeTrackerBundle:Location</argument>
+        </service>
+
+        <service id="paysera_time_tracker.repository.entry" class="Paysera\TimeTrackerBundle\Repository\EntryRepository"
+                 factory-service="doctrine.orm.entity_manager" factory-method="getRepository" lazy="true">
+            <argument>PayseraTimeTrackerBundle:Entry</argument>
+        </service>
+
+    </services>
+</container>

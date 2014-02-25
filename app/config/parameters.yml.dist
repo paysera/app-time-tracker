@@ -1,0 +1,21 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            en
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+
+    time_tracker.wallet_client_mac: 123
+    time_tracker.wallet_client_secret: abc
+
+    time_tracker.payment_description: Už parkavimą %%location_name%%

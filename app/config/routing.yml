@@ -1,0 +1,4 @@
+paysera_time_tracker:
+    resource: "@PayseraTimeTrackerBundle/Resources/config/routing.xml"
+    prefix:   /rest/v1
+

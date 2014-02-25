@@ -1,13 +1,13 @@
-# Bootstrap
-app/bootstrap*
+/web/bundles/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/config/parameters.yml
+/app/logs/*
+/build/
+/vendor/
+/bin/
+/composer.phar
 
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
+.idea/
 
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+phpunit.xml
